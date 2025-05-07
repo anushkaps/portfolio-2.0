@@ -1,0 +1,6 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Roof -->
+  <path d="M4 14L16 4L28 14V28H4V14Z" fill="#F4BFD9" stroke="#D173A4" stroke-width="2"></path>
+  <!-- Door -->
+  <rect x="13" y="18" width="6" height="10" fill="#D173A4"></rect>
+</svg>
