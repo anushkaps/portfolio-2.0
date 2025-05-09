@@ -33,11 +33,11 @@ const Window: React.FC<WindowProps> = ({ window, children }) => {
 
   return (
     <Rnd
-      className={`window ${isActive ? 'window-active' : 'window-inactive'}`}
+      className={`window ${isActive ? 'window-active' : 'window-inactive'} ${window.isNew ? 'window-open' : ''}`}
       style={{ 
         zIndex: window.zIndex,
-        border: '2px solid #8C4F6F',
-        outline: isActive ? '2px solid #FF8AC3' : 'none',
+        border: '2px solid var(--dark-contrast)',
+        outline: isActive ? '2px solid var(--pink-bright)' : 'none',
       }}
       default={{
         x: window.position.x,
@@ -90,7 +90,7 @@ const Window: React.FC<WindowProps> = ({ window, children }) => {
             </button>
           </div>
         </div>
-        <div className="window-body flex-1">
+        <div className="window-body flex-1 scanline">
           {children}
         </div>
       </div>

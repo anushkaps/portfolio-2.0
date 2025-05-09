@@ -3,11 +3,18 @@
 @tailwind utilities;
 
 :root {
+  /* Expanded color palette */
   --pink-primary: #f27fb4;
   --pink-light: #F4BFD9;
   --pink-bright: #FF8AC3;
   --pink-dark: #8C4F6F;
   --pink-bg: #f3d9f6;
+  /* New accent colors */
+  --mint-accent: #A0E6C8;
+  --blue-accent: #8CD4F5;
+  --purple-accent: #C8A2FF;
+  /* Darker shade for better contrast */
+  --dark-contrast: #60354C;
 }
 
 body, html {
@@ -19,12 +26,15 @@ body, html {
   overflow: hidden;
   height: 100vh;
   user-select: none;
+  color: var(--dark-contrast);
 }
 
+/* Enhanced pixel border with inner glow */
 .pixel-border {
   box-shadow: 
     0 0 0 1px rgba(0, 0, 0, 0.3), 
-    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    0 2px 4px rgba(140, 79, 111, 0.2);
   image-rendering: pixelated;
 }
 
@@ -36,37 +46,142 @@ body, html {
      1px  1px 0 #000;
 }
 
+/* New pattern background class */
+.pattern-bg {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238C4F6F' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='1'/%3E%3Ccircle cx='13' cy='13' r='1'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Scanline effect */
+.scanline {
+  position: relative;
+}
+
+.scanline::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 1;
+}
+
 @layer components {
   .window-header {
     @apply bg-[#D173A4] p-1 flex justify-between items-center text-white text-xs;
+    border-bottom: 2px solid var(--dark-contrast);
   }
   
   .window-body {
-    @apply bg-[#F4BFD9] p-2 overflow-auto;
+    @apply bg-[#F4BFD9] p-3 overflow-auto;
+    background-image: linear-gradient(to bottom, #F4BFD9, #f3d9f6);
   }
   
   .window-button {
     @apply w-4 h-4 mx-0.5 flex items-center justify-center text-xs border border-[#8C4F6F];
+    transition: background-color 0.2s;
+  }
+  
+  .window-button:hover {
+    background-color: var(--pink-bright);
   }
   
   .pixel-folder {
-    @apply flex flex-col items-center justify-center w-16 h-16 m-2 cursor-pointer hover:opacity-80 transition-opacity;
+    @apply flex flex-col items-center justify-center w-16 h-16 m-2 cursor-pointer transition-all;
+    position: relative;
+  }
+  
+  .pixel-folder:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+  }
+  
+  .pixel-folder:active {
+    transform: translateY(1px);
   }
   
   .pixel-button {
-    @apply bg-[#D173A4] text-white px-3 py-1 border-2 border-[#8C4F6F] hover:bg-[#FF8AC3] active:translate-y-px shadow-sm;
+    @apply bg-[#D173A4] text-white px-3 py-1 border-2 border-[#8C4F6F] hover:bg-[#FF8AC3] active:translate-y-px;
+    box-shadow: 0px 2px 0px var(--dark-contrast);
+    transition: all 0.15s ease;
+  }
+  
+  .pixel-button:active {
+    box-shadow: 0px 0px 0px var(--dark-contrast);
   }
   
   .taskbar-button {
     @apply px-2 py-1 bg-[#D173A4] hover:bg-[#FF8AC3] border border-black mx-1 text-white text-xs;
+    border-bottom: 2px solid var(--dark-contrast);
+    transition: all 0.15s ease;
+  }
+  
+  .taskbar-button.active {
+    background-color: var(--pink-bright);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
   }
   
   .taskbar-container {
-    @apply h-12 bg-pink-dark border-t-2 border-pink-primary border border-black flex items-center px-2 z-50;
+    @apply h-12 border-t-2 border-pink-primary border border-black flex items-center px-2 z-50;
+    background: linear-gradient(to bottom, #9E5A7C, #8C4F6F);
   }
 
   .icon-wrapper {
-    @apply w-10 h-10 p-1 border border-black bg-pink-light flex items-center justify-center;
+    @apply w-10 h-10 p-1 border border-black flex items-center justify-center;
+    background: linear-gradient(to bottom right, #F4BFD9, #f3d9f6);
+    transition: all 0.2s ease;
+  }
+  
+  .icon-wrapper:hover {
+    background: linear-gradient(to bottom right, var(--pink-bright), #F4BFD9);
+  }
+  
+  /* Skill bars */
+  .skill-bar {
+    @apply w-full h-4 bg-[#D173A4] mb-2 relative overflow-hidden;
+    border: 2px solid var(--dark-contrast);
+  }
+  
+  .skill-progress {
+    @apply h-full bg-[#8CD4F5];
+    position: relative;
+  }
+  
+  .skill-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.1)
+    );
+  }
+  
+  /* Tab navigation */
+  .nav-tabs {
+    @apply flex border-b border-dark-contrast overflow-hidden;
+  }
+  
+  .nav-tab {
+    @apply px-3 py-1 bg-[#D173A4] text-white border-r border-dark-contrast;
+    cursor: url('/cursors/pointer.png'), pointer;
+  }
+  
+  .nav-tab.active {
+    @apply bg-[#FF8AC3];
   }
 }
 
@@ -80,8 +195,10 @@ a, button, .clickable {
 
 .window {
   box-shadow: 4px 4px 0px rgba(140, 79, 111, 0.5);
+  border: 2px solid var(--dark-contrast);
 }
 
+/* Enhanced animations */
 .typing-cursor {
   animation: blink 1s step-end infinite;
 }
@@ -95,8 +212,46 @@ a, button, .clickable {
   }
 }
 
+.fadeIn {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.window-open {
+  animation: openWindow 0.3s ease-out;
+}
+
+@keyframes openWindow {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .glow-text {
   text-shadow: 0 0 5px #FF8AC3, 0 0 10px #FF8AC3;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #FF8AC3, 0 0 10px #FF8AC3;
+  }
+  to {
+    text-shadow: 0 0 7px #FF8AC3, 0 0 14px #FF8AC3, 0 0 20px #C8A2FF;
+  }
 }
 
 /* Container styles for responsive layout */
@@ -106,7 +261,17 @@ a, button, .clickable {
   width: 1080px;
   position: relative;
   overflow: hidden;
-  border: 1.3px solid black;
+  border: 2px solid var(--dark-contrast);
+  box-shadow: 0 0 20px rgba(140, 79, 111, 0.3);
+  background-color: var(--pink-bg);
+}
+
+/* Desktop icons grid layout */
+.desktop-icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 90px);
+  padding: 15px;
+  gap: 5px;
 }
 
 /* Responsive scaling between 800px and 1080px */
@@ -125,6 +290,10 @@ a, button, .clickable {
     width: 100%;
     height: 100vh;
   }
+  
+  .desktop-icons {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 /* Custom Scrollbar */
@@ -135,13 +304,82 @@ a, button, .clickable {
 ::-webkit-scrollbar-track {
   background: #F4BFD9;
   border: 2px solid #8C4F6F;
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #D173A4;
   border: 2px solid #8C4F6F;
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #FF8AC3;
+}
+
+/* Application-specific styles */
+.terminal {
+  background-color: #60354C;
+  color: #F4BFD9;
+  font-family: 'VT323', monospace;
+  padding: 10px;
+  line-height: 1.5;
+}
+
+.terminal-prompt::before {
+  content: '>';
+  margin-right: 5px;
+  color: var(--mint-accent);
+}
+
+/* Project card styles */
+.project-card {
+  @apply bg-[#F4BFD9] border-2 border-[#8C4F6F] p-3 mb-3;
+  transition: all 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(140, 79, 111, 0.3);
+}
+
+/* Grid layout for skills showcase */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* Status indicator for online/offline */
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.status-online {
+  background-color: var(--mint-accent);
+  box-shadow: 0 0 5px var(--mint-accent);
+}
+
+/* Retro pixel art background elements */
+.pixel-star {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  opacity: 0.5;
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%, 
+    79% 91%, 50% 70%, 21% 91%, 32% 57%, 
+    2% 35%, 39% 35%
+  );
+  animation: twinkle 4s infinite alternate;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.7; }
 }
