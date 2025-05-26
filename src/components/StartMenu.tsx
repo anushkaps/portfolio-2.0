@@ -23,7 +23,7 @@ const StartMenu: React.FC = () => {
       onClick={handleOutsideClick}
     >
       <div 
-        className="absolute left-2 bottom-12 w-48 bg-pink-light border-2 border-dark-contrast shadow-lg pixel-border fadeIn"
+        className="start-menu absolute left-2 bottom-12 w-48 bg-pink-light border-2 border-dark-contrast shadow-lg pixel-border fadeIn"
         onClick={e => e.stopPropagation()}
       >
         <div className="window-header bg-pink-primary px-2 py-1">

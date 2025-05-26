@@ -39,25 +39,11 @@ const Desktop: React.FC = () => {
 
   return (
     <div 
-      className="absolute inset-0 flex flex-wrap content-start p-4 desktop-background"
+      className="absolute inset-0 flex flex-col content-start p-4 desktop-background"
       onClick={handleDesktopClick}
     >
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-        <h1 className="text-lg md:text-3xl mb-2 heading-text text-simple fadeIn">
-          Hi, I'm Anushka
-        </h1>
-        <h2 className="text-xl md:text-4xl mb-4 subheading-text text-simple fadeIn" style={{animationDelay: '0.3s'}}>
-          Web Developer
-        </h2>
-        <p className="text-xs md:text-sm text-dark-contrast fadeIn" style={{animationDelay: '0.6s'}}>
-          Engineer by choice, artist by pixels
-          <span className="ml-1 text-pink-primary">🌸</span>
-        </p>
-        <div className="mt-4 fadeIn" style={{animationDelay: '0.9s'}}>
-        </div>
-      </div>
-      
-      <div className="absolute left-4 top-4 bottom-4 desktop-icons">
+      {/* Desktop Icons - positioned at top on mobile, left side on desktop */}
+      <div className="desktop-icons">
         <FolderIcon 
           type="home" 
           label="Home.exe"
@@ -94,11 +80,29 @@ const Desktop: React.FC = () => {
           onClick={() => openWindow('terminal')}
         />
       </div>
+
+      {/* Center Text - positioned below icons on mobile, center on desktop */}
+      <div className="flex-1 flex items-center justify-center text-center">
+        <div>
+          <h1 className="text-lg md:text-3xl mb-2 heading-text text-simple fadeIn">
+            Hi, I'm Anushka
+          </h1>
+          <h2 className="text-xl md:text-4xl mb-4 subheading-text text-simple fadeIn" style={{animationDelay: '0.3s'}}>
+            Web Developer
+          </h2>
+          <p className="text-xs md:text-sm text-dark-contrast fadeIn" style={{animationDelay: '0.6s'}}>
+            Engineer by choice, artist by pixels
+            <span className="ml-1 text-pink-primary">🌸</span>
+          </p>
+          <div className="mt-4 fadeIn" style={{animationDelay: '0.9s'}}>
+          </div>
+        </div>
+      </div>
       
-      {/* Decorative pixels */}
-      <div className="absolute bottom-12 right-12 w-4 h-4 bg-[#5DD4BF] animate-float" style={{ animationDelay: '0.2s' }}></div>
-      <div className="absolute bottom-16 right-16 w-3 h-3 bg-[#3CB2F2] animate-float" style={{ animationDelay: '0.5s' }}></div>
-      <div className="absolute bottom-20 right-8 w-2 h-2 bg-[#C29AFF] animate-float" style={{ animationDelay: '0.8s' }}></div>
+      {/* Decorative pixels - hidden on mobile */}
+      <div className="absolute bottom-12 right-12 w-4 h-4 bg-[#5DD4BF] animate-float hidden md:block" style={{ animationDelay: '0.2s' }}></div>
+      <div className="absolute bottom-16 right-16 w-3 h-3 bg-[#3CB2F2] animate-float hidden md:block" style={{ animationDelay: '0.5s' }}></div>
+      <div className="absolute bottom-20 right-8 w-2 h-2 bg-[#C29AFF] animate-float hidden md:block" style={{ animationDelay: '0.8s' }}></div>
     </div>
   );
 };
