@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Typewriter from 'typewriter-effect';
 
 const TerminalWindow: React.FC = () => {
   const [isTyping, setIsTyping] = useState(true);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [currentCommand, setCurrentCommand] = useState('');
+  const terminalRef = useRef<HTMLDivElement>(null);
+  
+  // Auto-scroll to bottom whenever command history changes
+  useEffect(() => {
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  }, [commandHistory, isTyping]);
   
   useEffect(() => {
     // Focus on the window when it opens
@@ -12,8 +20,21 @@ const TerminalWindow: React.FC = () => {
       setIsTyping(false);
     }, 9000); // Adjust timing based on typewriter duration
     
-    return () => clearTimeout(timer);
-  }, []);
+    // Add global key listener to complete typing on Enter
+    const handleGlobalKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && isTyping) {
+        setIsTyping(false);
+        clearTimeout(timer);
+      }
+    };
+
+    document.addEventListener('keydown', handleGlobalKeyPress);
+    
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('keydown', handleGlobalKeyPress);
+    };
+  }, [isTyping]);
   
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && currentCommand.trim()) {
@@ -39,13 +60,13 @@ Available commands:
 - help: Show this help menu
       `;
     } else if (cmd === 'about') {
-      response = "I'm Anushka, a web developer specializing in creating beautiful, interactive web experiences.";
+      response = "I'm Anushka, a web developer specializing in creating interactive web experiences.";
     } else if (cmd === 'skills') {
       response = "My skills include React, TypeScript, Node.js, UI/UX Design, and more.";
     } else if (cmd === 'projects') {
       response = "I've worked on e-commerce platforms, dashboards, and creative portfolio sites.";
     } else if (cmd === 'contact') {
-      response = "Email: anushka@example.com\nGitHub: github.com/anushka";
+      response = "Email: anushkasinghpratap@gmail.com\nGitHub: github.com/anushkaps";
     } else if (cmd === 'clear') {
       setCommandHistory([]);
       return;
@@ -53,36 +74,39 @@ Available commands:
       response = `Command not found: ${command}. Type 'help' for available commands.`;
     }
     
-    setCommandHistory([...commandHistory, `&gt; ${command}`, response]);
+    setCommandHistory([...commandHistory, `> ${command}`, response]);
   };
 
   return (
     <div className="p-2 h-full flex flex-col">
-      <div className="bg-black text-green-400 p-2 flex-1 font-mono text-xs overflow-auto">
+      <div 
+        ref={terminalRef}
+        className="bg-black text-green-400 p-2 flex-1 font-mono text-xs overflow-auto"
+      >
         {isTyping ? (
           <Typewriter
             onInit={(typewriter) => {
               typewriter
-                .typeString("&gt; Hello, welcome to my portfolio!")
+                .typeString("> Hello, welcome to my portfolio!")
                 .pauseFor(500)
                 .typeString("<br />")
-                .typeString("&gt; I'm Anushka.")
+                .typeString("> I'm Anushka.")
                 .pauseFor(500)
                 .typeString("<br />")
-                .typeString("&gt; I build dreamy things for the web.")
+                .typeString("> I build responsive and interactive websites.")
                 .pauseFor(500)
                 .typeString("<br />")
-                .typeString("&gt; Type 'help' to see available commands.")
+                .typeString("> Type 'help' to see available commands.")
                 .start();
             }}
           />
         ) : (
           <>
             <div className="mb-4">
-              <div>&gt; Hello, welcome to my portfolio!</div>
-              <div>&gt; I'm Anushka.</div>
-              <div>&gt; I build dreamy things for the web.</div>
-              <div>&gt; Type 'help' to see available commands.</div>
+              <div>{'>'} Hello, welcome to my portfolio!</div>
+              <div>{'>'} I'm Anushka.</div>
+              <div>{'>'} I build responsive and interactive websites.</div>
+              <div>{'>'} Type 'help' to see available commands.</div>
             </div>
             
             {commandHistory.map((line, index) => (
@@ -90,7 +114,7 @@ Available commands:
             ))}
             
             <div className="flex">
-              <span className="mr-1">&gt;</span>
+              <span className="mr-1">{'>'}</span>
               <input
                 type="text"
                 value={currentCommand}

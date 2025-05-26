@@ -8,9 +8,12 @@ export interface Window {
   title: string;
   isOpen: boolean;
   isMinimized: boolean;
+  isMaximized: boolean;
   zIndex: number;
   position: { x: number; y: number };
   size: { width: number; height: number };
+  originalPosition?: { x: number; y: number };
+  originalSize?: { width: number; height: number };
   isNew?: boolean;
 }
 
@@ -98,6 +101,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       title: getWindowTitle(type),
       isOpen: true,
       isMinimized: false,
+      isMaximized: false,
       zIndex: nextZIndex,
       position,
       size: getWindowSize(type),
@@ -141,15 +145,56 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const maximizeWindow = (id: string) => {
-    // For now, maximize is the same as restore
-    restoreWindow(id);
+    setWindows(
+      windows.map(window => {
+        if (window.id !== id) return window;
+        
+        if (window.isMaximized) {
+          // Restore to original size and position
+          return {
+            ...window,
+            isMaximized: false,
+            position: window.originalPosition || window.position,
+            size: window.originalSize || window.size,
+            originalPosition: undefined,
+            originalSize: undefined,
+            zIndex: nextZIndex
+          };
+        } else {
+          // Maximize to fill available space (accounting for taskbar)
+          const maxWidth = 1080 - 16; // Container width minus padding
+          const maxHeight = 720 - 32 - 16; // Container height minus taskbar and padding
+          
+          return {
+            ...window,
+            isMaximized: true,
+            originalPosition: window.position,
+            originalSize: window.size,
+            position: { x: 8, y: 8 },
+            size: { width: maxWidth, height: maxHeight },
+            zIndex: nextZIndex
+          };
+        }
+      })
+    );
+    setActiveWindow(id);
+    setNextZIndex(nextZIndex + 1);
   };
 
   const restoreWindow = (id: string) => {
     setWindows(
       windows.map(window => 
         window.id === id 
-          ? { ...window, isMinimized: false, zIndex: nextZIndex } 
+          ? { 
+              ...window, 
+              isMinimized: false,
+              isMaximized: false,
+              position: window.originalPosition || window.position,
+              size: window.originalSize || window.size,
+              originalPosition: undefined,
+              originalSize: undefined,
+              zIndex: nextZIndex 
+            } 
           : window
       )
     );

@@ -23,7 +23,7 @@ const ContactWindow: React.FC = () => {
 
   return (
     <div className="p-2 h-full overflow-auto">
-      <div className="bg-pink-light p-4 border-2 border-pink-dark h-full">
+      <div className="bg-pink-light p-4 border-2 border-pink-dark min-h-full">
         <h2 className="text-pink-primary text-lg mb-4 glow-text">Contact Me</h2>
         
         {isSubmitted ? (
@@ -88,41 +88,41 @@ const ContactWindow: React.FC = () => {
           
           <div className="space-y-2">
             <a 
-              href="mailto:anushka@example.com" 
+              href="mailto:anushkasinghpratap@gmail.com" 
               className="flex items-center text-xs text-pink-dark hover:text-pink-primary"
             >
               <Mail size={14} className="mr-2" />
-              anushka@example.com
+              anushkasinghpratap@gmail.com
             </a>
             
             <a 
-              href="https://github.com" 
+              href="https://github.com/anushkaps" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="flex items-center text-xs text-pink-dark hover:text-pink-primary"
             >
               <Github size={14} className="mr-2" />
-              github.com/anushka
+              github.com/anushkaps
             </a>
             
             <a 
-              href="https://linkedin.com" 
+              href="http://www.linkedin.com/in/anushka-pratap-singh" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="flex items-center text-xs text-pink-dark hover:text-pink-primary"
             >
               <Linkedin size={14} className="mr-2" />
-              linkedin.com/in/anushka
+              linkedin.com/in/anushka-pratap-singh
             </a>
             
             <a 
-              href="https://twitter.com" 
+              href="https://x.com/anushkapspsps" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="flex items-center text-xs text-pink-dark hover:text-pink-primary"
             >
               <Twitter size={14} className="mr-2" />
-              @anushka_dev
+              @anushkapspsps
             </a>
           </div>
         </div>

@@ -10,17 +10,24 @@ interface FolderIconProps {
 const FolderIcon: React.FC<FolderIconProps> = ({ type, label, onClick }) => {
   return (
     <div 
-      className="pixel-folder flex flex-col items-center"
+      className="pixel-folder flex flex-col items-center cursor-pointer"
       onClick={onClick}
     >
-      <div className="w-12 h-12 mb-1 icon-wrapper">
+      <div className="w-18 h-18 mb-0 flex items-center justify-center">
         <img 
-          src={`/icons/${type}.svg`} 
+          src={`/icons/${type}.png`} 
           alt={`${type} icon`} 
-          className="w-full h-full object-contain"
+          className="w-16 h-16 object-cover"
+          style={{ 
+            imageRendering: 'pixelated',
+            width: '48px',
+            height: '48px'
+          }}
         />
       </div>
-      <span className="text-[8px] text-center text-dark-contrast leading-tight glow-text">{label}</span>
+      <span className="text-[8.5px] text-center text-dark-contrast leading-tight whitespace-nowrap">
+        {label}
+      </span>
     </div>
   );
 };

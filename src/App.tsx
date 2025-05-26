@@ -1,4 +1,5 @@
-import React, { useState } from 'react';import Desktop from './components/Desktop';
+import React, { useState } from 'react';
+import Desktop from './components/Desktop';
 import Taskbar from './components/Taskbar';
 import { AppProvider } from './context/AppContext';
 import StartMenu from './components/StartMenu';
@@ -14,14 +15,30 @@ function App() {
 
   return (
     <AppProvider>
-      <div className="min-h-screen w-screen flex items-center justify-center bg-[#f3d9f6]">
-        <div className="os-container pixel-border scanline">
-          <div className="flex flex-col h-full w-full overflow-hidden font-pixel text-sm">
-            <div className="flex-1 relative overflow-hidden">
-              <Desktop />
-              <Windows />
-              <StartMenu />
+      <div className="min-h-screen w-screen flex items-center justify-center bg-pink-bg">
+        <div className="os-container">
+          {/* Top Title Bar - thick bordered rectangle */}
+          <div className="title-bar">
+            <div className="flex items-center justify-between h-full px-4">
+              <div className="flex items-center">
+                <span className="text-white text-xs font-pixel">Anushka.OS</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-white text-xs">22°C</span>
+                <div className="w-4 h-4 bg-yellow-400"></div> {/* Weather icon */}
+              </div>
             </div>
+          </div>
+
+          {/* Main Desktop Area */}
+          <div className="desktop-area">
+            <Desktop />
+            <Windows />
+            <StartMenu />
+          </div>
+
+          {/* Bottom Taskbar - thick bordered rectangle */}
+          <div className="taskbar-wrapper">
             <Taskbar />
           </div>
         </div>

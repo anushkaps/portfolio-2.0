@@ -37,11 +37,11 @@ const Taskbar: React.FC = () => {
         className={`taskbar-button flex items-center ${isStartMenuOpen ? 'active' : ''}`}
         onClick={toggleStartMenu}
       >
-        <Heart size={12} className="mr-1" />
+        <Heart size={12} className="mr-1 fill-white" color="white" />
         Start
       </button>
 
-      <div className="h-8 border-r border-pink-primary mx-2"></div>
+      <div className="h-6 border-r-2 border-pink-dark mx-1"></div>
 
       <div className="flex-1 flex overflow-x-auto py-1">
         {windows
@@ -57,14 +57,14 @@ const Taskbar: React.FC = () => {
           ))}
       </div>
 
-      <div className="h-8 border-r border-pink-primary mx-2"></div>
+      <div className="h-6 border-r-2 border-pink-dark mx-1"></div>
 
-      <div className="text-xs text-white px-2">
-        <div>{date}</div>
+      <div className="taskbar-button text-xs text-white">
+        {date}
       </div>
 
-      <div className="taskbar-button flex items-center">
-        <div className="mr-1 w-2 h-2 bg-mint-accent rounded-full animate-pulse"></div>
+      <div className="taskbar-button flex items-center text-xs">
+        <div className="mr-1 w-2 h-2 bg-white rounded-full animate-pulse"></div>
         {time}
       </div>
     </div>

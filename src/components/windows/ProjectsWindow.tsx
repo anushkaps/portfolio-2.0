@@ -4,34 +4,34 @@ import { ExternalLink } from 'lucide-react';
 const projects = [
   {
     id: 1,
-    title: 'E-Commerce Platform',
-    description: 'A modern e-commerce site with React, Node.js, and Stripe integration',
-    link: '#'
+    title: 'TradeHub',
+    description: 'Public codebase for a cloud-based job platform with Supabase, role-based auth, and real-time dashboards.',
+    link: 'https://www.tradehub24.com/'
   },
   {
     id: 2,
-    title: 'Weather Dashboard',
-    description: 'Real-time weather application with beautiful visualizations and 5-day forecast',
-    link: '#'
+    title: 'Dynamic Event Calendar',
+    description: 'Event calendar built with ReactJS, ShadCN, and Tailwind — supports localStorage and interactive UI.',
+    link: 'https://dynamic-event-calendar-beta.vercel.app/'
   },
   {
     id: 3,
-    title: 'Task Management App',
-    description: 'Full-stack task management application with drag-and-drop interfaces',
-    link: '#'
+    title: 'Tenzies Game',
+    description: 'Fun dice game built with React, offering interactive gameplay and sleek UI.',
+    link: 'https://tenzies-game-aps.vercel.app/'
   },
   {
     id: 4,
-    title: 'Portfolio Website',
-    description: 'Creative portfolio site with animations and interactive elements',
-    link: '#'
+    title: 'Scraping Call Center Info',
+    description: 'Script to scrape call center data across the US for structured research and analysis.',
+    link: 'https://github.com/anushkaps/scraping-call-center-info-US'
   }
 ];
 
 const ProjectsWindow: React.FC = () => {
   return (
     <div className="p-2 h-full overflow-auto">
-      <div className="bg-pink-light p-4 border-2 border-pink-dark h-full">
+      <div className="bg-pink-light p-4 border-2 border-pink-dark min-h-full">
         <h2 className="text-pink-primary text-lg mb-4 glow-text">My Projects</h2>
         
         <div className="space-y-4">
@@ -57,9 +57,15 @@ const ProjectsWindow: React.FC = () => {
         </div>
         
         <div className="mt-4 text-center">
-          <button className="pixel-button text-xs">
-            View All Projects
-          </button>
+          <a 
+            href="https://github.com/anushkaps" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <button className="pixel-button text-xs">
+              View All Projects
+            </button>
+          </a>
         </div>
       </div>
     </div>

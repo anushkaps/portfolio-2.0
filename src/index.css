@@ -3,18 +3,20 @@
 @tailwind utilities;
 
 :root {
-  /* Expanded color palette */
-  --pink-primary: #f27fb4;
-  --pink-light: #F4BFD9;
-  --pink-bright: #FF8AC3;
-  --pink-dark: #8C4F6F;
-  --pink-bg: #f3d9f6;
-  /* New accent colors */
-  --mint-accent: #A0E6C8;
-  --blue-accent: #8CD4F5;
-  --purple-accent: #C8A2FF;
-  /* Darker shade for better contrast */
-  --dark-contrast: #60354C;
+  /* Color palette from loading screen */
+  --pink-primary: #FF6BB3; /* Brighter pink */
+  --pink-light: #FFCDE3;   /* Light pink background */
+  --pink-bright: #FF90CB;  /* Medium bright pink */
+  --pink-dark: #D44B98;    /* Deeper pink for borders */
+  --pink-bg: #fed0e7;      /* Very light pink background */
+  
+  /* Remove unused accent colors */
+  --mint-accent: #59DFB8;  
+  --blue-accent: #5DBEFD;  
+  --purple-accent: #B985FF; 
+  
+  /* Darker shade for text */
+  --dark-contrast: #7A2966; 
 }
 
 body, html {
@@ -22,33 +24,38 @@ body, html {
   padding: 0;
   font-family: 'Press Start 2P', cursive;
   background-color: var(--pink-bg);
-  cursor: url('/cursors/normal.png'), auto;
+  cursor: url('/cursors/cursor.png'), auto !important;
   overflow: hidden;
   height: 100vh;
   user-select: none;
   color: var(--dark-contrast);
 }
 
-/* Enhanced pixel border with inner glow */
+/* Simplified pixel border with thicker border like loading screen */
 .pixel-border {
-  box-shadow: 
-    0 0 0 1px rgba(0, 0, 0, 0.3), 
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
-    0 2px 4px rgba(140, 79, 111, 0.2);
-  image-rendering: pixelated;
+  border: 4px solid var(--pink-dark);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
 }
 
-.text-outline{
-  text-shadow:
-    -1px -1px 0 #000,  
-     1px -1px 0 #000,
-    -1px  1px 0 #000,
-     1px  1px 0 #000;
+/* Remove text outline and replace with simple text styles */
+.heading-text {
+  font-size: 28px;
+  line-height: 32px;
+  color: #f759a3;
+  text-align: center;
+  margin-top: 20px;
 }
 
-/* New pattern background class */
+.subheading-text {
+  font-size: 18px;
+  color: #f759a3;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Updated pattern background class with new colors */
 .pattern-bg {
-  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238C4F6F' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='1'/%3E%3Ccircle cx='13' cy='13' r='1'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23D44B98' fill-opacity='0.08' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='1'/%3E%3Ccircle cx='13' cy='13' r='1'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* Scanline effect */
@@ -76,17 +83,17 @@ body, html {
 
 @layer components {
   .window-header {
-    @apply bg-[#D173A4] p-1 flex justify-between items-center text-white text-xs;
+    @apply bg-[#E962A7] p-1 flex justify-between items-center text-white text-xs;
     border-bottom: 2px solid var(--dark-contrast);
   }
   
   .window-body {
-    @apply bg-[#F4BFD9] p-3 overflow-auto;
-    background-image: linear-gradient(to bottom, #F4BFD9, #f3d9f6);
+    @apply bg-[#FFCDE3] p-3 overflow-auto;
+    background-image: linear-gradient(to bottom, #FFCDE3, #FFE6F7);
   }
   
   .window-button {
-    @apply w-4 h-4 mx-0.5 flex items-center justify-center text-xs border border-[#8C4F6F];
+    @apply w-4 h-4 mx-0.5 flex items-center justify-center text-xs border border-[#D44B98];
     transition: background-color 0.2s;
   }
   
@@ -95,9 +102,16 @@ body, html {
   }
   
   .pixel-folder {
-    @apply flex flex-col items-center justify-center w-16 h-16 m-2 cursor-pointer transition-all;
-    position: relative;
-  }
+    width: 80px;
+    height: 80px;
+    margin: 0;
+    image-rendering: pixelated;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }  
   
   .pixel-folder:hover {
     transform: translateY(-2px);
@@ -109,7 +123,7 @@ body, html {
   }
   
   .pixel-button {
-    @apply bg-[#D173A4] text-white px-3 py-1 border-2 border-[#8C4F6F] hover:bg-[#FF8AC3] active:translate-y-px;
+    @apply bg-[#E962A7] text-white px-3 py-1 border-2 border-[#D44B98] hover:bg-[#FF90CB] active:translate-y-px;
     box-shadow: 0px 2px 0px var(--dark-contrast);
     transition: all 0.15s ease;
   }
@@ -119,39 +133,69 @@ body, html {
   }
   
   .taskbar-button {
-    @apply px-2 py-1 bg-[#D173A4] hover:bg-[#FF8AC3] border border-black mx-1 text-white text-xs;
-    border-bottom: 2px solid var(--dark-contrast);
-    transition: all 0.15s ease;
-  }
+    font-size: 10px;
+    padding: 4px 8px;
+    background-color: #D44B98;
+    color: white;
+    border: 2px solid #7A2966;
+    border-top: 2px solid #FF90CB;
+    border-left: 2px solid #FF90CB;
+    box-shadow: none;
+    image-rendering: pixelated;
+  }  
   
   .taskbar-button.active {
-    background-color: var(--pink-bright);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+    background-color: #B83C87;
+    border: 2px solid #7A2966;
+    border-bottom: 2px solid #FF90CB;
+    border-right: 2px solid #FF90CB;
+    box-shadow: none;
   }
   
   .taskbar-container {
-    @apply h-12 border-t-2 border-pink-primary border border-black flex items-center px-2 z-50;
-    background: linear-gradient(to bottom, #9E5A7C, #8C4F6F);
-  }
+    height: 32px;
+    border-top: 3px solid #7A2966;
+    background-color: #D44B98;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    image-rendering: pixelated;
+  }  
+
+  .taskbar-clock {
+    padding: 4px 6px;
+    background-color: #FF90CB;
+    border: 2px solid var(--pink-dark);
+    color: white;
+    font-size: 10px;
+  }  
 
   .icon-wrapper {
     @apply w-10 h-10 p-1 border border-black flex items-center justify-center;
-    background: linear-gradient(to bottom right, #F4BFD9, #f3d9f6);
+    background: linear-gradient(to bottom right, #FFCDE3, #FFE6F7);
     transition: all 0.2s ease;
   }
   
   .icon-wrapper:hover {
-    background: linear-gradient(to bottom right, var(--pink-bright), #F4BFD9);
+    background: linear-gradient(to bottom right, var(--pink-bright), #FFCDE3);
   }
-  
-  /* Skill bars */
+
+  .icon-label {
+    font-size: 10px;
+    color: var(--pink-primary);
+    text-align: center;
+    margin-top: 4px;
+    display: block;
+  }  
+  /* Skill bars with updated colors */
   .skill-bar {
-    @apply w-full h-4 bg-[#D173A4] mb-2 relative overflow-hidden;
+    @apply w-full h-4 bg-[#E962A7] mb-2 relative overflow-hidden;
     border: 2px solid var(--dark-contrast);
   }
   
   .skill-progress {
-    @apply h-full bg-[#8CD4F5];
+    @apply h-full bg-[#5DBEFD];
     position: relative;
   }
   
@@ -176,26 +220,33 @@ body, html {
   }
   
   .nav-tab {
-    @apply px-3 py-1 bg-[#D173A4] text-white border-r border-dark-contrast;
-    cursor: url('/cursors/pointer.png'), pointer;
+    @apply px-3 py-1 bg-[#E962A7] text-white border-r border-dark-contrast;
+    cursor: url('/cursors/pointer.png'), pointer !important;
   }
   
   .nav-tab.active {
-    @apply bg-[#FF8AC3];
+    @apply bg-[#FF90CB];
   }
 }
 
-* {
-  cursor: url('/cursors/normal.png'), auto;
+/* Exclude resize handles from global cursor override */
+*:not(.react-resizable-handle) {
+  cursor: url('/cursors/cursor.png'), auto !important;
 }
 
-a, button, .clickable {
-  cursor: url('/cursors/pointer.png'), pointer;
+a, button, .clickable, [role="button"], input[type="button"], input[type="submit"], 
+input[type="reset"], select, [onclick], .pixel-folder, .window-button, .taskbar-button {
+  cursor: url('/cursors/pointer.png'), pointer !important;
+}
+
+/* Ensure resize handles are not affected by global cursor styles */
+.react-resizable-handle {
+  cursor: url('/cursors/resize-cursor.png?v=1'), auto !important;
 }
 
 .window {
-  box-shadow: 4px 4px 0px rgba(140, 79, 111, 0.5);
-  border: 2px solid var(--dark-contrast);
+  box-shadow: 4px 4px 0px rgba(122, 41, 102, 0.5);
+  border: 4px solid var(--pink-dark);
 }
 
 /* Enhanced animations */
@@ -240,38 +291,88 @@ a, button, .clickable {
   }
 }
 
+/* Remove glow text */
 .glow-text {
-  text-shadow: 0 0 5px #FF8AC3, 0 0 10px #FF8AC3;
-  animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-  from {
-    text-shadow: 0 0 5px #FF8AC3, 0 0 10px #FF8AC3;
-  }
-  to {
-    text-shadow: 0 0 7px #FF8AC3, 0 0 14px #FF8AC3, 0 0 20px #C8A2FF;
-  }
+  color: var(--pink-primary);
 }
 
 /* Container styles for responsive layout */
 .os-container {
-  margin: 0 auto;
+  margin: 40px auto;
   height: 720px;
   width: 1080px;
   position: relative;
-  overflow: hidden;
-  border: 2px solid var(--dark-contrast);
-  box-shadow: 0 0 20px rgba(140, 79, 111, 0.3);
+  /* Reduce outer container border from 8px to 4px */
+  border: 4px solid #7A2966;
   background-color: var(--pink-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top title bar with thick borders */
+.title-bar {
+  height: 40px;
+  background: linear-gradient(to bottom, #f55dab, #D44B98);
+  border-bottom: 3px solid #7A2966;
+  border-top: 1px solid #FF90CB;
+  box-shadow: 
+    inset 0 1px 0 #FF90CB,
+    inset 0 -1px 0 #7A2966;
+}
+
+/* Main desktop area */
+.desktop-area {
+  flex: 1;
+  position: relative;
+  background-color: #fed0e7; /* Fallback color */
+  background-image: url('/final.png');
+  background-size: cover;
+  background-position: top left;
+  background-repeat: no-repeat;
+  border-left: 2px solid #D44B98;
+  border-right: 2px solid #D44B98;
+  overflow: hidden;
+  /* Add padding to account for inner content spacing */
+  padding: 20px;
+}
+
+/* Bottom taskbar wrapper with thick borders */
+.taskbar-wrapper {
+  height: 50px;
+  background-color: #f55dab;
+  border-top: 3px solid #7A2966;
+  border-bottom: 1px solid #FF90CB;
+  box-shadow: 
+    inset 0 1px 0 #FF90CB,
+    inset 0 -1px 0 #7A2966;
+}
+
+/* Update taskbar-container to fit within wrapper */
+.taskbar-container {
+  height: 100%;
+  border: none; /* Remove existing border */
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  image-rendering: pixelated;
 }
 
 /* Desktop icons grid layout */
 .desktop-icons {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 90px);
-  padding: 15px;
-  gap: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 0; /* Remove top margin since we have padding now */
+  margin-left: 0; /* Remove left margin since we have padding now */
+  align-items: flex-start;
+  width: 100px;
+  height: calc(100% - 40px); /* Account for padding */
+  justify-content: flex-start;
+  position: absolute;
+  left: 20px; /* Position within the padded area */
+  top: 20px;
 }
 
 /* Responsive scaling between 800px and 1080px */
@@ -296,31 +397,31 @@ a, button, .clickable {
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar with updated colors */
 ::-webkit-scrollbar {
   width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F4BFD9;
-  border: 2px solid #8C4F6F;
+  background: #FFCDE3;
+  border: 2px solid #D44B98;
   border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D173A4;
-  border: 2px solid #8C4F6F;
+  background: #E962A7;
+  border: 2px solid #D44B98;
   border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #FF8AC3;
+  background: #FF90CB;
 }
 
 /* Application-specific styles */
 .terminal {
-  background-color: #60354C;
-  color: #F4BFD9;
+  background-color: #20112E; /* Deeper, richer terminal background */
+  color: #FFE6F7;
   font-family: 'VT323', monospace;
   padding: 10px;
   line-height: 1.5;
@@ -329,18 +430,18 @@ a, button, .clickable {
 .terminal-prompt::before {
   content: '>';
   margin-right: 5px;
-  color: var(--mint-accent);
+  color: var(--pink-bright);
 }
 
 /* Project card styles */
 .project-card {
-  @apply bg-[#F4BFD9] border-2 border-[#8C4F6F] p-3 mb-3;
+  @apply bg-[#FFCDE3] border-2 border-[#D44B98] p-3 mb-3;
   transition: all 0.2s ease;
 }
 
 .project-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(140, 79, 111, 0.3);
+  box-shadow: 0 4px 8px rgba(122, 41, 102, 0.3);
 }
 
 /* Grid layout for skills showcase */
@@ -360,8 +461,8 @@ a, button, .clickable {
 }
 
 .status-online {
-  background-color: var(--mint-accent);
-  box-shadow: 0 0 5px var(--mint-accent);
+  background-color: var(--pink-bright);
+  box-shadow: 0 0 5px var(--pink-bright);
 }
 
 /* Retro pixel art background elements */
@@ -369,7 +470,7 @@ a, button, .clickable {
   position: absolute;
   width: 6px;
   height: 6px;
-  background-color: white;
+  background-color: var(--pink-primary);
   opacity: 0.5;
   clip-path: polygon(
     50% 0%, 61% 35%, 98% 35%, 68% 57%, 
@@ -382,4 +483,190 @@ a, button, .clickable {
 @keyframes twinkle {
   0%, 100% { opacity: 0.2; }
   50% { opacity: 0.7; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Resize cursor classes */
+.cursor-ns-resize {
+  cursor: ns-resize !important;
+}
+
+.cursor-ew-resize {
+  cursor: ew-resize !important;
+}
+
+.cursor-nw-resize {
+  cursor: nw-resize !important;
+}
+
+.cursor-ne-resize {
+  cursor: ne-resize !important;
+}
+
+.cursor-sw-resize {
+  cursor: sw-resize !important;
+}
+
+.cursor-se-resize {
+  cursor: se-resize !important;
+}
+
+/* Override default cursor for resize areas */
+.resize-handle {
+  position: absolute;
+  z-index: 10;
+}
+
+.resize-handle.resize-n {
+  top: 0;
+  left: 8px;
+  right: 8px;
+  height: 8px;
+  cursor: ns-resize !important;
+}
+
+.resize-handle.resize-s {
+  bottom: 0;
+  left: 8px;
+  right: 8px;
+  height: 8px;
+  cursor: ns-resize !important;
+}
+
+.resize-handle.resize-e {
+  top: 8px;
+  right: 0;
+  bottom: 8px;
+  width: 8px;
+  cursor: ew-resize !important;
+}
+
+.resize-handle.resize-w {
+  top: 8px;
+  left: 0;
+  bottom: 8px;
+  width: 8px;
+  cursor: ew-resize !important;
+}
+
+.resize-handle.resize-nw {
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  cursor: nw-resize !important;
+}
+
+.resize-handle.resize-ne {
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  cursor: ne-resize !important;
+}
+
+.resize-handle.resize-sw {
+  bottom: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  cursor: sw-resize !important;
+}
+
+.resize-handle.resize-se {
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  cursor: se-resize !important;
+}
+
+/* React-rnd resize handle styles */
+.react-resizable-handle {
+  position: absolute;
+  background: transparent;
+  z-index: 999;
+}
+
+.react-resizable-handle:hover {
+  background: transparent;
+}
+
+/* Override custom cursors for resize handles */
+.react-resizable-handle-top {
+  cursor: url('/cursors/resize-cursor.png'), ns-resize !important;
+  top: 0;
+  left: 8px;
+  right: 8px;
+  height: 8px;
+}
+
+.react-resizable-handle-right {
+  cursor: url('/cursors/resize-cursor.png'), ew-resize !important;
+  top: 8px;
+  right: 0;
+  bottom: 8px;
+  width: 8px;
+}
+
+.react-resizable-handle-bottom {
+  cursor: url('/cursors/resize-cursor.png'), ns-resize !important;
+  bottom: 0;
+  left: 8px;
+  right: 8px;
+  height: 8px;
+}
+
+.react-resizable-handle-left {
+  cursor: url('/cursors/resize-cursor.png'), ew-resize !important;
+  top: 8px;
+  left: 0;
+  bottom: 8px;
+  width: 8px;
+}
+
+.react-resizable-handle-top-right {
+  cursor: url('/cursors/resize-cursor.png'), ne-resize !important;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+}
+
+.react-resizable-handle-bottom-right {
+  cursor: url('/cursors/resize-cursor.png'), se-resize !important;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+}
+
+.react-resizable-handle-bottom-left {
+  cursor: url('/cursors/resize-cursor.png'), sw-resize !important;
+  bottom: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+}
+
+.react-resizable-handle-top-left {
+  cursor: url('/cursors/resize-cursor.png'), nw-resize !important;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+}
+
+/* Ensure resize handles override global cursor styles */
+.react-resizable-handle,
+.react-resizable-handle * {
+  cursor: inherit !important;
 }
