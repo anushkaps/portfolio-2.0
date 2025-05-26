@@ -8,7 +8,7 @@ interface WindowProps {
   children: React.ReactNode;
 }
 
-const Window: React.FC<WindowProps> = ({ window, children }) => {
+const Window: React.FC<WindowProps> = ({ window: windowData, children }) => {
   const { 
     activeWindow, 
     setActiveWindow, 
@@ -22,31 +22,72 @@ const Window: React.FC<WindowProps> = ({ window, children }) => {
   const windowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (windowRef.current && activeWindow === window.id) {
+    if (windowRef.current && activeWindow === windowData.id) {
       windowRef.current.focus();
     }
-  }, [activeWindow, window.id]);
+  }, [activeWindow, windowData.id]);
 
-  if (window.isMinimized) return null;
+  // Function to ensure window is visible by scrolling if necessary
+  const ensureWindowVisible = (x: number, y: number, width: number, height: number) => {
+    const scrollMargin = 50; // Margin from viewport edge
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
 
-  const isActive = activeWindow === window.id;
-  const isMaximized = window.isMaximized;
+    // Calculate if window extends beyond viewport
+    const windowRight = x + width;
+    const windowBottom = y + height;
+    const viewportRight = scrollX + viewportWidth;
+    const viewportBottom = scrollY + viewportHeight;
+
+    let newScrollX = scrollX;
+    let newScrollY = scrollY;
+
+    // Check horizontal scrolling
+    if (windowRight > viewportRight - scrollMargin) {
+      newScrollX = windowRight - viewportWidth + scrollMargin;
+    } else if (x < scrollX + scrollMargin) {
+      newScrollX = Math.max(0, x - scrollMargin);
+    }
+
+    // Check vertical scrolling
+    if (windowBottom > viewportBottom - scrollMargin) {
+      newScrollY = windowBottom - viewportHeight + scrollMargin;
+    } else if (y < scrollY + scrollMargin) {
+      newScrollY = Math.max(0, y - scrollMargin);
+    }
+
+    // Smooth scroll to new position if needed
+    if (newScrollX !== scrollX || newScrollY !== scrollY) {
+      window.scrollTo({
+        left: newScrollX,
+        top: newScrollY,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  if (windowData.isMinimized) return null;
+
+  const isActive = activeWindow === windowData.id;
+  const isMaximized = windowData.isMaximized;
 
   return (
     <Rnd
-      className={`window ${isActive ? 'window-active' : 'window-inactive'} ${window.isNew ? 'window-open' : ''}`}
+      className={`window ${isActive ? 'window-active' : 'window-inactive'} ${windowData.isNew ? 'window-open' : ''}`}
       style={{ 
-        zIndex: window.zIndex,
+        zIndex: windowData.zIndex,
         border: '2px solid var(--dark-contrast)',
         outline: isActive ? '2px solid var(--pink-bright)' : 'none',
       }}
       position={{
-        x: window.position.x,
-        y: window.position.y,
+        x: windowData.position.x,
+        y: windowData.position.y,
       }}
       size={{
-        width: window.size.width,
-        height: window.size.height,
+        width: windowData.size.width,
+        height: windowData.size.height,
       }}
       minWidth={300}
       minHeight={200}
@@ -74,19 +115,25 @@ const Window: React.FC<WindowProps> = ({ window, children }) => {
       } : false}
       onDragStop={(e, d) => {
         if (!isMaximized) {
-          updateWindowPosition(window.id, { x: d.x, y: d.y });
+          updateWindowPosition(windowData.id, { x: d.x, y: d.y });
+          // Ensure window remains visible after drag
+          ensureWindowVisible(d.x, d.y, windowData.size.width, windowData.size.height);
         }
       }}
       onResizeStop={(e, direction, ref, delta, position) => {
         if (!isMaximized) {
-          updateWindowSize(window.id, {
-            width: parseInt(ref.style.width),
-            height: parseInt(ref.style.height),
+          const newWidth = parseInt(ref.style.width);
+          const newHeight = parseInt(ref.style.height);
+          updateWindowSize(windowData.id, {
+            width: newWidth,
+            height: newHeight,
           });
-          updateWindowPosition(window.id, position);
+          updateWindowPosition(windowData.id, position);
+          // Ensure window remains visible after resize
+          ensureWindowVisible(position.x, position.y, newWidth, newHeight);
         }
       }}
-      onClick={() => setActiveWindow(window.id)}
+      onClick={() => setActiveWindow(windowData.id)}
     >
       <div 
         ref={windowRef}
@@ -95,24 +142,24 @@ const Window: React.FC<WindowProps> = ({ window, children }) => {
       >
         <div className="window-header">
           <div className="window-title truncate flex-1">
-            {window.title}
+            {windowData.title}
           </div>
           <div className="flex">
             <button 
               className="window-button bg-pink-light"
-              onClick={() => minimizeWindow(window.id)}
+              onClick={() => minimizeWindow(windowData.id)}
             >
               <Minimize2 size={10} />
             </button>
             <button 
               className="window-button bg-pink-light"
-              onClick={() => maximizeWindow(window.id)}
+              onClick={() => maximizeWindow(windowData.id)}
             >
               {isMaximized ? <Minimize size={10} /> : <Maximize2 size={10} />}
             </button>
             <button 
               className="window-button bg-pink-light"
-              onClick={() => closeWindow(window.id)}
+              onClick={() => closeWindow(windowData.id)}
             >
               <X size={10} />
             </button>

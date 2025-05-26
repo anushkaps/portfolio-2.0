@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { Heart } from 'lucide-react';
+import { Heart, X } from 'lucide-react';
 
 const Taskbar: React.FC = () => {
   const { 
@@ -8,7 +8,8 @@ const Taskbar: React.FC = () => {
     activeWindow, 
     isStartMenuOpen,
     toggleStartMenu, 
-    restoreWindow 
+    restoreWindow,
+    closeWindow
   } = useAppContext();
 
   const [time, setTime] = useState<string>('');
@@ -47,13 +48,26 @@ const Taskbar: React.FC = () => {
         {windows
           .filter(window => window.isOpen)
           .map(window => (
-            <button
+            <div
               key={window.id}
-              className={`taskbar-button truncate max-w-xs ${activeWindow === window.id ? 'active' : ''}`}
-              onClick={() => restoreWindow(window.id)}
+              className={`taskbar-button-container flex items-center max-w-xs ${activeWindow === window.id ? 'active' : ''}`}
             >
-              {window.title}
-            </button>
+              <button
+                className="taskbar-button-main truncate flex-1"
+                onClick={() => restoreWindow(window.id)}
+              >
+                {window.title}
+              </button>
+              <button
+                className="taskbar-close-button ml-1 p-1 hover:bg-pink-primary hover:bg-opacity-20 rounded"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeWindow(window.id);
+                }}
+              >
+                <X size={10} />
+              </button>
+            </div>
           ))}
       </div>
 

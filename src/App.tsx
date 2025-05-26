@@ -15,7 +15,7 @@ function App() {
 
   return (
     <AppProvider>
-      <div className="min-h-screen w-screen flex items-center justify-center bg-pink-bg">
+      <div className="min-h-screen w-full flex items-start justify-center bg-pink-bg py-10">
         <div className="os-container">
           {/* Top Title Bar - thick bordered rectangle */}
           <div className="title-bar">
