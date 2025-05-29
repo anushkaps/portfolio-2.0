@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Github, Linkedin, Twitter } from 'lucide-react';
+import supabase from '../../../supabaseClient'; // Adjust path if needed
 
 const ContactWindow: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -23,19 +24,17 @@ const ContactWindow: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      const { error } = await supabase.from('messages').insert([formData]);
 
-      if (res.ok) {
-        setIsSubmitted(true);
+      if (error) {
+        console.error(error);
+        alert('Failed to send message.');
       } else {
-        alert('Something went wrong!');
+        setIsSubmitted(true);
       }
     } catch (err) {
       alert('Submission failed.');
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
@@ -54,9 +53,7 @@ const ContactWindow: React.FC = () => {
         ) : (
           <form onSubmit={handleSubmit} className="mb-6">
             <div className="mb-3">
-              <label htmlFor="name" className="block text-xs mb-1">
-                Name:
-              </label>
+              <label htmlFor="name" className="block text-xs mb-1">Name:</label>
               <input
                 type="text"
                 id="name"
@@ -69,9 +66,7 @@ const ContactWindow: React.FC = () => {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="email" className="block text-xs mb-1">
-                Email:
-              </label>
+              <label htmlFor="email" className="block text-xs mb-1">Email:</label>
               <input
                 type="email"
                 id="email"
@@ -84,9 +79,7 @@ const ContactWindow: React.FC = () => {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="message" className="block text-xs mb-1">
-                Message:
-              </label>
+              <label htmlFor="message" className="block text-xs mb-1">Message:</label>
               <textarea
                 id="message"
                 name="message"
